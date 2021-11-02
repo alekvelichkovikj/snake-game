@@ -31,12 +31,11 @@ function startGame(e) {
   switch (key) {
     // RELOAD GAME
     case 82:
-      paused = false
       location.reload()
       break
     // PRESS ENTER TO START THE GAME
     case 13:
-      document.querySelector('p.toggle').innerHTML = ''
+      document.querySelector('p.toggle').remove()
       draw()
       break
   }
@@ -101,6 +100,7 @@ function moveSnake() {
   const head = { x: snake[0].x + dx, y: snake[0].y + dy }
   snake.unshift(head)
 
+  //IF THE SNAKE EATS THE APPLE WE CONCATENATE THE RESULT & WE DONT POP() THE LAST ELEMENT OF THE SNAKE ARRAY THEREFORE MAKING IT LONGER
   let snakeAteFood = snake[0].x === appleX && snake[0].y === appleY
   if (snakeAteFood) {
     score += 10
@@ -162,9 +162,7 @@ function getApple() {
 
 function drawApple() {
   snakeBoxContext.fillStyle = '#b30707'
-  // snakeBoxContext.strokeStyle = '#191919'
   snakeBoxContext.fillRect(appleX, appleY, snakeSize, snakeSize)
-  // snakeBoxContext.strokeRect(appleX, appleY, snakeSize, snakeSize)
 }
 
 // GAME OVER
