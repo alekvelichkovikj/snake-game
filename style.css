@@ -1,4 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
 body {
+  font-family: 'Roboto', sans-serif;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -7,9 +10,28 @@ body {
   overflow: hidden;
   margin: 0;
   color: #3f3f3f;
+  background-color: #fafafa;
 }
 
 #game {
-  border: #3f3f3f solid 2px;
+  border: #3f3f3f solid 3px;
   border-radius: 5px;
+}
+
+.score {
+  color: #3f3f3f;
+  font-size: 26px;
+  margin: 10px 0 30px 0;
+}
+
+h1 {
+  font-size: 50px;
+}
+
+p {
+  font-size: 24px;
+}
+
+span {
+  color: #b30707;
 }
