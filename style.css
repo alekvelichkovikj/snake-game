@@ -10,12 +10,13 @@ body {
   overflow: hidden;
   margin: 0;
   color: #3f3f3f;
-  background-color: #fafafa;
+  background-color: #f3f3f3;
 }
 
 #game {
   border: #3f3f3f solid 3px;
   border-radius: 5px;
+  background-color: #fff;
 }
 
 .score {
@@ -30,8 +31,14 @@ h1 {
 
 p {
   font-size: 24px;
+  text-align: center;
 }
 
 span {
   color: #b30707;
+  font-size: 28px;
+}
+
+.score span {
+  font-size: 30px;
 }

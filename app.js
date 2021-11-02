@@ -24,14 +24,33 @@ let snake = [
   { x: 150, y: 200 },
 ]
 
-// CALLING MAIN TO START THE GAME
-draw()
+// START THE GAME
+window.addEventListener('keydown', startGame)
+function startGame(e) {
+  let key = e.keyCode
+  switch (key) {
+    // RELOAD GAME
+    case 82:
+      paused = false
+      location.reload()
+      break
+    // PRESS ENTER TO START THE GAME
+    case 13:
+      document.querySelector('p.toggle').innerHTML = ''
+      draw()
+      break
+  }
+}
 
 // GETTING THE APPLE
 getApple()
 
-// MAIN FUNCTION CALLS ITSELF TO KEEP THE GAME GOING
+// MAIN FUNCTION CALLS ITSELF TO KEEP THE GAME GOING ONCE GAME STARTED
 function draw() {
+  if (gameOver()) {
+    return
+  }
+
   setTimeout(function onTick() {
     clearCanvas()
     drawApple()
@@ -42,11 +61,6 @@ function draw() {
       draw()
     }
   }, 100)
-}
-
-// CLEARING THE CANVASS AFTER THE SNAKE MOVES
-function clearCanvas() {
-  snakeBoxContext.fillRect(0, 0, snakeBox.width, snakeBox.height)
 }
 
 // PAUSING GAME
@@ -65,6 +79,11 @@ function togglePause() {
   draw()
 }
 
+// CLEARING THE CANVASS AFTER THE SNAKE MOVES
+function clearCanvas() {
+  snakeBoxContext.fillRect(0, 0, snakeBox.width, snakeBox.height)
+}
+
 // DRAWING THE SNAKE ON THE CANVAS
 function snakeElement(el) {
   snakeBoxContext.fillStyle = '#fff'
@@ -81,10 +100,12 @@ function drawSnake() {
 function moveSnake() {
   const head = { x: snake[0].x + dx, y: snake[0].y + dy }
   snake.unshift(head)
+
   let snakeAteFood = snake[0].x === appleX && snake[0].y === appleY
   if (snakeAteFood) {
     score += 10
-    document.querySelector('.score').innerText = 'Score:' + ' ' + score
+    document.querySelector('.score').innerHTML =
+      'Score:' + ' ' + `<span>${score}</span>`
     getApple()
   } else {
     snake.pop()
@@ -94,8 +115,8 @@ function moveSnake() {
 // INCORPORATING ARROW KEYS TO CHANGE DIRECTION
 document.addEventListener('keydown', changeDirection)
 
-function changeDirection(event) {
-  const key = event.keyCode
+function changeDirection(e) {
+  const key = e.keyCode
   const moveUp = dy === -10
   const moveDown = dy === 10
   const moveRight = dx === 10
@@ -106,6 +127,7 @@ function changeDirection(event) {
   const upKey = 38
   const downKey = 40
 
+  // WE MAKE SURE THAT THE SNAKE CAN'T GO IN REVERSE BUT IT DOESNT LISTEN ANYWAY 🦄
   if (key === leftKey && !moveRight) {
     dx = -10
     dy = 0
@@ -126,22 +148,38 @@ function changeDirection(event) {
 
 // MAKING THE APPLE
 function getRandom(min, max) {
-  return Math.floor((Math.random() * (max - min) + min) / 10) * 10
+  return Math.floor((Math.random() * 400) / 10) * 10
 }
 
 function getApple() {
   appleX = getRandom(0, snakeBox.width - 10)
   appleY = getRandom(0, snakeBox.height - 10)
   snake.forEach(function appleEaten(snakeHead) {
-    const eaten = snakeHead.x == appleX && snakeHead.y == appleY
-    if (eaten) getApple()
+    const alreadyEaten = snakeHead.x == appleX && snakeHead.y == appleY
+    if (alreadyEaten) getApple()
   })
 }
 
 function drawApple() {
   snakeBoxContext.fillStyle = '#b30707'
+  // snakeBoxContext.strokeStyle = '#191919'
   snakeBoxContext.fillRect(appleX, appleY, snakeSize, snakeSize)
+  // snakeBoxContext.strokeRect(appleX, appleY, snakeSize, snakeSize)
 }
 
 // GAME OVER
-function gameOver() {}
+function gameOver() {
+  // HERE WE CHECK IF A COLLISION HAPPENED WITH THE SNAKE'S BODY
+  for (let i = 1; i < snake.length; i++) {
+    const collision = snake[i].x === snake[0].x && snake[i].y === snake[0].y
+    if (collision) return true
+  }
+  // HERE WE CHECK FOR A COLLISION WITHIN THE BOUNDARIES OF THE CANVAS
+  const wallHit =
+    snake[0].x < 0 ||
+    snake[0].x > snakeBox.width - 10 ||
+    snake[0].y < 0 ||
+    snake[0].y > snakeBox.height - 10
+
+  return wallHit
+}
