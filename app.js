@@ -4,6 +4,8 @@
 // STEP 4: CREATING THE APPLE
 // STEP 5: GAME OVER / If  THE SNAKE HITS A WALL / IF THE SNAKE HITS ITSELF
 
+// BUGS TO FIX: SNAKE STILL GOES IN REVERSE, AT STARTUP IF U PRESS SPACE INSTEAD OF ENTER IT TRIGERS THE DRAW(), THE BLACK CANVAS ON LOADING
+
 // Variables
 const snakeBox = document.querySelector('#game')
 const snakeBoxContext = game.getContext('2d')
@@ -32,6 +34,7 @@ function startGame(e) {
     // RELOAD GAME
     case 82:
       location.reload()
+      draw
       break
     // PRESS ENTER TO START THE GAME
     case 13:
