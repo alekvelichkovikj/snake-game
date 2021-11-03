@@ -18,6 +18,7 @@ let snakeSquare = 10
 let paused = false
 let displayScore = 0
 let keyBuffer = []
+let appleBite = new Audio('audio/20279__koops__apple-crunch-16.mp3')
 
 let snake = [
   { x: 200, y: 200 },
@@ -146,6 +147,7 @@ function moveSnake() {
   //IF THE SNAKE EATS THE APPLE WE CONCATENATE THE RESULT & WE DONT POP() THE LAST ELEMENT OF THE SNAKE ARRAY
   const snakeAteFood = head.x === appleX && head.y === appleY
   if (snakeAteFood) {
+    appleBite.play()
     displayScore += 10
     score.innerHTML = 'Score:' + ' ' + `<span>${displayScore}</span>`
     getApple()
