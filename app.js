@@ -162,9 +162,10 @@ function getRandom(min, max) {
 function getApple() {
   appleX = getRandom(0, snakeBox.width - 10)
   appleY = getRandom(0, snakeBox.height - 10)
-  if (snake[0].x === appleX && snake[0].y === appleY) {
-    getApple()
-  }
+  snake.forEach(function appleEaten(snakePart) {
+    const alreadyEaten = snakePart.x == appleX && snakePart.y == appleY
+    if (alreadyEaten) getApple()
+  })
 }
 
 function drawApple() {
