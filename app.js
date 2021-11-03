@@ -101,9 +101,14 @@ function drawSnake() {
 
 // MOVING THE SNAKE
 document.addEventListener('keydown', changeDirection)
-
 function changeDirection(e) {
-  keyBuffer.push(e.keyCode)
+  if (
+    e.keyCode >= 37 &&
+    e.keyCode <= 40 &&
+    e.keyCode !== keyBuffer[keyBuffer.length - 1]
+  ) {
+    keyBuffer.push(e.keyCode)
+  }
 }
 
 function moveSnake() {
