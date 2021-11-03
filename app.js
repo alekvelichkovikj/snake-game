@@ -9,13 +9,14 @@
 // Variables
 const snakeBox = document.querySelector('#game')
 const snakeBoxContext = game.getContext('2d')
+let score = document.querySelector('.score')
 let dx = 10
 let dy = 0
 let appleX
 let appleY
-let score = 0
-let snakeSize = 10
+let snakeSquare = 10
 let paused = false
+let displayScore = 0
 
 let snake = [
   { x: 200, y: 200 },
@@ -90,8 +91,8 @@ function clearCanvas() {
 function snakeElement(el) {
   snakeBoxContext.fillStyle = '#fff'
   snakeBoxContext.strokeStyle = '#191919'
-  snakeBoxContext.fillRect(el.x, el.y, snakeSize, snakeSize)
-  snakeBoxContext.strokeRect(el.x, el.y, snakeSize, snakeSize)
+  snakeBoxContext.fillRect(el.x, el.y, snakeSquare, snakeSquare)
+  snakeBoxContext.strokeRect(el.x, el.y, snakeSquare, snakeSquare)
 }
 
 function drawSnake() {
@@ -104,11 +105,10 @@ function moveSnake() {
   snake.unshift(head)
 
   //IF THE SNAKE EATS THE APPLE WE CONCATENATE THE RESULT & WE DONT POP() THE LAST ELEMENT OF THE SNAKE ARRAY THEREFORE MAKING IT LONGER
-  let snakeAteFood = snake[0].x === appleX && snake[0].y === appleY
+  const snakeAteFood = head.x === appleX && head.y === appleY
   if (snakeAteFood) {
-    score += 10
-    document.querySelector('.score').innerHTML =
-      'Score:' + ' ' + `<span>${score}</span>`
+    displayScore += 10
+    score.innerHTML = 'Score:' + ' ' + `<span>${displayScore}</span>`
     getApple()
   } else {
     snake.pop()
@@ -157,15 +157,14 @@ function getRandom(min, max) {
 function getApple() {
   appleX = getRandom(0, snakeBox.width - 10)
   appleY = getRandom(0, snakeBox.height - 10)
-  snake.forEach(function appleEaten(snakeHead) {
-    const alreadyEaten = snakeHead.x == appleX && snakeHead.y == appleY
-    if (alreadyEaten) getApple()
-  })
+  if (snake[0].x === appleX && snake[0].y === appleY) {
+    getApple()
+  }
 }
 
 function drawApple() {
   snakeBoxContext.fillStyle = '#b30707'
-  snakeBoxContext.fillRect(appleX, appleY, snakeSize, snakeSize)
+  snakeBoxContext.fillRect(appleX, appleY, snakeSquare, snakeSquare)
 }
 
 // GAME OVER
