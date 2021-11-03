@@ -16,7 +16,10 @@ body {
 #game {
   border: #3f3f3f solid 3px;
   border-radius: 5px;
-  background-color: #fff !important;
+  background-color: #fff;
+}
+
+.overlay {
 }
 
 .score {

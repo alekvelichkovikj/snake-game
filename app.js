@@ -4,7 +4,7 @@
 // STEP 4: CREATING THE APPLE
 // STEP 5: GAME OVER / If  THE SNAKE HITS A WALL / IF THE SNAKE HITS ITSELF
 
-// BUGS TO FIX: SNAKE STILL GOES IN REVERSE, AT STARTUP IF U PRESS SPACE INSTEAD OF ENTER IT TRIGERS THE DRAW(), THE BLACK CANVAS ON LOADING
+// BUGS TO FIX: AT STARTUP IF U PRESS SPACE INSTEAD OF ENTER IT TRIGERS THE DRAW(), THE BLACK CANVAS ON LOADING
 
 // Variables
 const snakeBox = document.querySelector('#game')
@@ -17,6 +17,7 @@ let appleY
 let snakeSquare = 10
 let paused = false
 let displayScore = 0
+let keyBuffer = []
 
 let snake = [
   { x: 200, y: 200 },
@@ -99,27 +100,17 @@ function drawSnake() {
   snake.forEach(snakeElement)
 }
 
-// MOVING THE SNAKE AUTOMATICALLY
-function moveSnake() {
-  const head = { x: snake[0].x + dx, y: snake[0].y + dy }
-  snake.unshift(head)
-
-  //IF THE SNAKE EATS THE APPLE WE CONCATENATE THE RESULT & WE DONT POP() THE LAST ELEMENT OF THE SNAKE ARRAY THEREFORE MAKING IT LONGER
-  const snakeAteFood = head.x === appleX && head.y === appleY
-  if (snakeAteFood) {
-    displayScore += 10
-    score.innerHTML = 'Score:' + ' ' + `<span>${displayScore}</span>`
-    getApple()
-  } else {
-    snake.pop()
-  }
-}
-
-// INCORPORATING ARROW KEYS TO CHANGE DIRECTION
+// MOVING THE SNAKE
 document.addEventListener('keydown', changeDirection)
 
 function changeDirection(e) {
-  const key = e.keyCode
+  keyBuffer.push(e.keyCode)
+}
+
+function moveSnake() {
+  // IMPLEMENTED A BUFFER TO AVOID GOING IN REVERSE
+  // IMPLEMENTED ARROW KEYS
+  firstKeyStroke = keyBuffer.shift()
   const moveUp = dy === -10
   const moveDown = dy === 10
   const moveRight = dx === 10
@@ -130,22 +121,36 @@ function changeDirection(e) {
   const upKey = 38
   const downKey = 40
 
-  // WE MAKE SURE THAT THE SNAKE CAN'T GO IN REVERSE BUT IT DOESNT LISTEN ANYWAY 🦄
-  if (key === leftKey && !moveRight) {
+  // WE MAKE SURE THAT THE SNAKE CAN'T GO IN REVERSE 🦄
+  if (firstKeyStroke === leftKey && !moveRight) {
     dx = -10
     dy = 0
   }
-  if (key === upKey && !moveDown) {
+  if (firstKeyStroke === upKey && !moveDown) {
     dx = 0
     dy = -10
   }
-  if (key === rightKey && !moveLeft) {
+  if (firstKeyStroke === rightKey && !moveLeft) {
     dx = 10
     dy = 0
   }
-  if (key === downKey && !moveUp) {
+  if (firstKeyStroke === downKey && !moveUp) {
     dx = 0
     dy = 10
+  }
+
+  // AUTOMATIC MOVEMENT OF THE SNAKE
+  const head = { x: snake[0].x + dx, y: snake[0].y + dy }
+  snake.unshift(head)
+
+  //IF THE SNAKE EATS THE APPLE WE CONCATENATE THE RESULT & WE DONT POP() THE LAST ELEMENT OF THE SNAKE ARRAY
+  const snakeAteFood = head.x === appleX && head.y === appleY
+  if (snakeAteFood) {
+    displayScore += 10
+    score.innerHTML = 'Score:' + ' ' + `<span>${displayScore}</span>`
+    getApple()
+  } else {
+    snake.pop()
   }
 }
 
