@@ -18,6 +18,7 @@ let displayScore = 0
 let keyBuffer = []
 let appleBite = new Audio('audio/20279__koops__apple-crunch-16.mp3')
 let state = false
+let gameOverText = document.querySelector('.game-over')
 
 let snake = [
   { x: 200, y: 200 },
@@ -53,6 +54,7 @@ getApple()
 // MAIN FUNCTION CALLS ITSELF TO KEEP THE GAME GOING ONCE GAME STARTED
 function draw() {
   if (gameOver()) {
+    gameOverText.classList.add('active')
     return
   }
 
@@ -189,6 +191,7 @@ function gameOver() {
     const collision = snake[i].x === snake[0].x && snake[i].y === snake[0].y
     if (collision) return true
   }
+
   // HERE WE CHECK FOR A COLLISION WITHIN THE BOUNDARIES OF THE CANVAS
   const wallHit =
     snake[0].x < 0 ||

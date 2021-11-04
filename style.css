@@ -42,3 +42,11 @@ span {
 .score span {
   font-size: 30px;
 }
+
+.game-over {
+  display: none;
+}
+
+.active {
+  display: block;
+}
