@@ -11,6 +11,7 @@ body {
   margin: 0;
   color: #3f3f3f;
   background-color: #f3f3f3;
+  line-height: 2rem;
 }
 
 #game {
