@@ -17,6 +17,7 @@ let paused = false
 let displayScore = 0
 let keyBuffer = []
 let appleBite = new Audio('audio/20279__koops__apple-crunch-16.mp3')
+let state = false
 
 let snake = [
   { x: 200, y: 200 },
@@ -39,6 +40,7 @@ function startGame(e) {
       break
     // PRESS ENTER TO START THE GAME
     case 13:
+      state = true
       document.querySelector('p.toggle').remove()
       draw()
       break
@@ -78,8 +80,10 @@ function pauseGame(e) {
 }
 
 function togglePause() {
-  paused = !paused
-  draw()
+  if (state) {
+    paused = !paused
+    draw()
+  }
 }
 
 // CLEARING THE CANVASS AFTER THE SNAKE MOVES
