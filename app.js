@@ -42,7 +42,7 @@ function startGame(e) {
     // PRESS ENTER TO START THE GAME
     case 13:
       state = true
-      document.querySelector('p.toggle').remove()
+      document.querySelector('h3.toggle').remove()
       draw()
       break
   }

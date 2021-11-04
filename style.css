@@ -29,7 +29,7 @@ h1 {
   font-size: 50px;
 }
 
-p {
+h3 {
   font-size: 24px;
   text-align: center;
 }
@@ -37,10 +37,6 @@ p {
 span {
   color: #b30707;
   font-size: 28px;
-}
-
-.score span {
-  font-size: 30px;
 }
 
 .game-over {
